@@ -1,0 +1,101 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f7faef;
+  --foreground: #1f2a1c;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+section[id] {
+  scroll-margin-top: 96px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  display: flex;
+  width: max-content;
+  animation: scroll 25s linear infinite;
+}
+
+@keyframes scroll-rtl {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-scroll-rtl {
+  display: flex;
+  width: max-content;
+  animation: scroll-rtl 45s linear infinite;
+}
+
+.marquee-fade-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(62, 125, 48, 1),
+    rgba(62, 125, 48, 0)
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+.marquee-fade-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 100%;
+  background: linear-gradient(
+    to left,
+    rgba(84, 145, 56, 1),
+    rgba(84, 145, 56, 0)
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes team-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-team-float {
+  animation: team-float 5.5s ease-in-out infinite;
+}
