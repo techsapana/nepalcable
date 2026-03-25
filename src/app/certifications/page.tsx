@@ -48,34 +48,103 @@ const getPrimaryPdfUrl = (fileUrl: string) => {
   return fileUrl;
 };
 
-const getAlternatePdfUrl = (fileUrl: string) => {
-  if (!isPdfFile(fileUrl)) {
-    return fileUrl;
+function PdfCardThumbnail({
+  fileUrl,
+  name,
+}: {
+  fileUrl: string;
+  name: string;
+}) {
+  const [thumbnailSrc, setThumbnailSrc] = useState<string | null>(null);
+  const [thumbnailFailed, setThumbnailFailed] = useState(false);
+
+  useEffect(() => {
+    let isCancelled = false;
+
+    const renderThumbnail = async () => {
+      setThumbnailSrc(null);
+      setThumbnailFailed(false);
+
+      try {
+        const pdfjs = await import("pdfjs-dist");
+        pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
+
+        const loadingTask = pdfjs.getDocument({
+          url: getPrimaryPdfUrl(fileUrl),
+          withCredentials: false,
+        });
+
+        const pdfDocument = await loadingTask.promise;
+        const page = await pdfDocument.getPage(1);
+
+        const targetWidth = 440;
+        const baseViewport = page.getViewport({ scale: 1 });
+        const scale = targetWidth / baseViewport.width;
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.max(1, Math.floor(viewport.width));
+        canvas.height = Math.max(1, Math.floor(viewport.height));
+
+        const context = canvas.getContext("2d");
+        if (!context) {
+          throw new Error("Canvas context unavailable");
+        }
+
+        await page.render({
+          canvas,
+          canvasContext: context,
+          viewport,
+        }).promise;
+
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.86);
+
+        if (!isCancelled) {
+          setThumbnailSrc(dataUrl);
+        }
+
+        await pdfDocument.destroy();
+      } catch {
+        if (!isCancelled) {
+          setThumbnailFailed(true);
+        }
+      }
+    };
+
+    renderThumbnail();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [fileUrl]);
+
+  if (thumbnailSrc) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={thumbnailSrc}
+        alt={`${name} PDF thumbnail`}
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
+    );
   }
 
-  if (fileUrl.includes("/raw/upload/")) {
-    return fileUrl.replace("/raw/upload/", "/image/upload/");
+  if (thumbnailFailed) {
+    return (
+      <div className="w-full h-full flex items-center justify-center bg-gray-50 text-gray-600 font-semibold px-3 text-center">
+        PDF Preview
+      </div>
+    );
   }
 
-  if (fileUrl.includes("/image/upload/")) {
-    return fileUrl.replace("/image/upload/", "/raw/upload/");
-  }
-
-  return fileUrl;
-};
-
-const getPdfCardPreviewImageUrl = (fileUrl: string) => {
-  if (!fileUrl.includes("/upload/")) {
-    return fileUrl;
-  }
-
-  const withPageTransform = fileUrl.replace(
-    "/upload/",
-    "/upload/pg_1,f_jpg,q_auto/",
+  return (
+    <div
+      className="w-full h-full animate-pulse bg-gray-100"
+      aria-hidden="true"
+    />
   );
-
-  return withPageTransform.replace(/\.pdf(\?|$)/i, ".jpg$1");
-};
+}
 
 export default function CertificationsPage() {
   const [items, setItems] = useState<Certification[]>([]);
@@ -191,12 +260,9 @@ export default function CertificationsPage() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <Image
-                          src={getPdfCardPreviewImageUrl(item.fileUrl)}
-                          alt={`${item.name} PDF preview`}
-                          width={220}
-                          height={300}
-                          className="w-full h-full object-cover"
+                        <PdfCardThumbnail
+                          fileUrl={item.fileUrl}
+                          name={item.name}
                         />
                       )}
                     </div>
@@ -273,20 +339,6 @@ export default function CertificationsPage() {
                     PDF preview is blocked in browser. Use the buttons below.
                   </div>
                 )}
-
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 flex-wrap justify-center">
-                  {getAlternatePdfUrl(selectedItem.fileUrl) !==
-                    getPrimaryPdfUrl(selectedItem.fileUrl) && (
-                    <a
-                      href={getAlternatePdfUrl(selectedItem.fileUrl)}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="px-4 py-2 rounded bg-emerald-700 hover:bg-emerald-800 text-white font-semibold"
-                    >
-                      Try Alternate Link
-                    </a>
-                  )}
-                </div>
               </div>
             )}
           </div>
