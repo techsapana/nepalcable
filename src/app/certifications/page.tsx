@@ -11,7 +11,13 @@ type Certification = {
 
 const API_URL = "/api/certificates";
 
-const isPdfFile = (fileUrl: string) => /\.pdf(\?|$)/i.test(fileUrl);
+const isPdfFile = (fileUrl: string) => {
+  if (/\.pdf(\?|$)/i.test(fileUrl)) {
+    return true;
+  }
+
+  return fileUrl.includes("/raw/upload/");
+};
 
 const isImageFile = (fileUrl: string) => {
   if (isPdfFile(fileUrl)) {

@@ -46,6 +46,18 @@ const isAllowedCertificateFile = (file: File) => {
   return mimeType.startsWith("image/");
 };
 
+const createPdfPublicId = (fileName: string) => {
+  const baseName = fileName.replace(/\.[^/.]+$/, "");
+  const normalized = baseName
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 80);
+
+  const safeBaseName = normalized || "certificate";
+  return `${Date.now()}-${safeBaseName}.pdf`;
+};
+
 export async function GET() {
   try {
     const certifications = await prisma.certifications.findMany({
@@ -116,7 +128,17 @@ export async function POST(request: Request) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
-    const uploaded = await uploadtocloudinary(buffer, "certificates");
+    const isPdf = file.type.toLowerCase() === "application/pdf";
+    const uploaded = await uploadtocloudinary(
+      buffer,
+      "certificates",
+      isPdf
+        ? {
+            resource_type: "raw",
+            public_id: createPdfPublicId(file.name),
+          }
+        : undefined,
+    );
 
     const created = await prisma.certifications.create({
       data: {

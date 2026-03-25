@@ -43,3 +43,5 @@ next-env.d.ts
 .venv
 public/files
 src/app/generated/prisma
+
+src/generated
