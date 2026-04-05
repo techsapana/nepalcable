@@ -19,20 +19,20 @@ const faqs: FAQ[] = [
   {
     question: "Do you support both small and large orders?",
     answer:
-      "Yes. We support individual customers, contractors, and enterprise buyers with flexible order volumes and dependable fulfillment.",
+      "Yes, we do. We support individual customers, contractors, and enterprise buyers with flexible order volumes and dependable delivery.",
   },
   {
-    question: "Do your products meet quality standards?",
+    question: "Can your product boast quality standards?",
     answer:
       "Yes. Our cable lines are produced with strict quality checks and material standards to ensure long-term safety and performance.",
   },
   {
-    question: "How quickly can you deliver?",
+    question: "How quickly do you deliver?",
     answer:
-      "Delivery timelines vary by location and order size, but our team prioritizes timely dispatch and clear delivery coordination across Nepal.",
+      "Delivery timelines vary by location and order size, but our team prioritizes timely dispatch and clear delivery coordination at all time.",
   },
   {
-    question: "Can I get help choosing the right cable?",
+    question: "Can I be helped in choosing the right cable?",
     answer:
       "Absolutely. Our team helps you select product specifications based on your project requirements, load conditions, and installation environment.",
   },

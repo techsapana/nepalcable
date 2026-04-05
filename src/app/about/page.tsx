@@ -260,9 +260,9 @@ const AboutUs = () => {
               We take this opportunity to introduce ourselves as a manufacturer
               of quality wire and cables with the brand name “NEPAL CABLES”. Our
               manufacturing plant is located in Simra, Bara (Central Nepal) and
-              has been in commercial production for two decades. We manufacture
+              has been in commercial production for four decades. We manufacture
               electrical, electronic and telecom wires and cables, including
-              AAC, AAAC, ABC and ACSR conductors of various sizes. We have our
+              AAC, AAAC, ABC, ACSR,etc. conductors of various sizes. We have our
               branch offices all across the country, as well as a dealership
               network throughout. Our cables are rapidly gaining popularity in
               the markets of neighboring countries too.
@@ -276,7 +276,7 @@ const AboutUs = () => {
               to contribute by producing high quality wires & cables with low
               losses. For this purpose, innovation in products and technology
               has become a continuous process in the working of Nepal Cables. It
-              is an ISO 9001:2000 company.
+              is an ISO 9001:2015 company.
             </p>
 
             <p>
