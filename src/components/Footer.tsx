@@ -110,17 +110,18 @@ const Footer = () => {
                 <FiMail className="text-emerald-700 text-xl mt-1" />
                 <div>
                   <a
-                    href="mailto:necables@hotmail.com"
+                    href="mailto:nepalcables2025@gmail.com"
                     className="text-slate-700 hover:text-emerald-700 transition-colors"
                   >
-                    necables@hotmail.com
+                    nepalcables2025@gmail.com
                   </a>
                 </div>
               </li>
 
               <li className="flex items-start gap-3">
                 <FiMapPin className="text-emerald-700 text-xl mt-1" />
-                <span className="text-slate-700">Basundhara, Kathmandu</span>
+                <span className="text-slate-700"> Head office:Basundhara, Kathmandu</span>
+                <span className="text-slate-700"> MFG Plant:Simara, Bara,Nepal</span>
               </li>
 
               <li className="flex items-start gap-3">
@@ -128,9 +129,11 @@ const Footer = () => {
                 <div className="space-y-1">
                   <div>
                     <div className="text-slate-700 space-y-1">
-                      <p>4373315</p>
-                      <p>4372323</p>
-                      <p>4372113</p>
+                      <p>Basundhara branch:01-4373315,01-4372323</p>
+                      <p>Bhotebahal Branch:01-5904348</p>
+                      <p>Pokhara Branch:061-531330</p>
+                      <p>Butwal Branch:071-546054</p>
+                      <p>Simara Branch:00977-053-520471,520003</p>
                     </div>
                   </div>
                 </div>
