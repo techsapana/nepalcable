@@ -120,7 +120,18 @@ const Footer = () => {
 
               <li className="flex items-start gap-3">
                 <FiMapPin className="text-emerald-700 text-xl mt-1" />
-                <span className="text-slate-700"> Head office:Basundhara, Kathmandu</span>
+                <span className="text-slate-700"><p>Head Office: Nepal Wire & Cables (P.) Ltd.</p>
+                <p>2322 Basundhara, (Narayan Gopal Chowk), </p>
+                <p>Chakrapath-5, Maharajgunj, Kathmandu, Nepal.</p>
+                <p>Tel.: 00977-1-4372323, 4373315</p></span>
+              </li>
+
+              <li className="flex items-start gap-3">
+                <FiMapPin className="text-emerald-700 text-xl mt-1" />
+                <span className="text-slate-700"><p>MFG Plant(Factory):Jeetpursimara Sub-Metropolitan, Ward No.1,  Madhesh Pradesh,Simara, Bara, Nepal.</p>
+                <p>Tel.: 00977- 053-520471, 520003</p>
+                <p>Email: nepalcables@yahoo.com</p>
+
                 <span className="text-slate-700"> MFG Plant:Simara, Bara,Nepal</span>
               </li>
 
@@ -129,11 +140,9 @@ const Footer = () => {
                 <div className="space-y-1">
                   <div>
                     <div className="text-slate-700 space-y-1">
-                      <p>Basundhara branch:01-4373315,01-4372323</p>
                       <p>Bhotebahal Branch:01-5904348</p>
                       <p>Pokhara Branch:061-531330</p>
                       <p>Butwal Branch:071-546054</p>
-                      <p>Simara Branch:00977-053-520471,520003</p>
                     </div>
                   </div>
                 </div>
