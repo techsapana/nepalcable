@@ -120,19 +120,21 @@ const Footer = () => {
 
               <li className="flex items-start gap-3">
                 <FiMapPin className="text-emerald-700 text-xl mt-1" />
-                <span className="text-slate-700"><p>Head Office: Nepal Wire & Cables (P.) Ltd.</p>
-                <p>2322 Basundhara, (Narayan Gopal Chowk), </p>
-                <p>Chakrapath-5, Maharajgunj, Kathmandu, Nepal.</p>
-                <p>Tel.: 00977-1-4372323, 4373315</p></span>
-              </li>
+            <div className="text-slate-700">
+  <p>Head Office: Nepal Wire & Cables (P.) Ltd.</p>
+  <p>2322 Basundhara, (Narayan Gopal Chowk)</p>
+  <p>Chakrapath-5, Maharajgunj, Kathmandu, Nepal.</p>
+  <p>Tel.: 00977-1-4372323, 4373315</p>
+</div>
+           </li>
 
               <li className="flex items-start gap-3">
                 <FiMapPin className="text-emerald-700 text-xl mt-1" />
-                <span className="text-slate-700"><p>MFG Plant(Factory):Jeetpursimara Sub-Metropolitan, Ward No.1,  Madhesh Pradesh,Simara, Bara, Nepal.</p>
+                <div className="text-slate-700">
+                <p>MFG Plant(Factory):Jeetpursimara Sub-Metropolitan, Ward No.1,  Madhesh Pradesh,Simara, Bara, Nepal.</p>
                 <p>Tel.: 00977- 053-520471, 520003</p>
                 <p>Email: nepalcables@yahoo.com</p>
-
-                <span className="text-slate-700"> MFG Plant:Simara, Bara,Nepal</span>
+                </div>
               </li>
 
               <li className="flex items-start gap-3">
