@@ -246,7 +246,7 @@ export default function ContactUsPage() {
                   Office Location
                 </h3>
                 <p className="text-slate-700 leading-relaxed">
-                  Basundhara, Kathmandu
+                  Maharajgung,Chakrapath, Kathmandu
                 </p>
               </div>
             </div>
@@ -285,7 +285,7 @@ export default function ContactUsPage() {
                 <div className="space-y-2">
                   <div>
                     <p className="text-slate-700 hover:text-emerald-700 transition">
-                      4373315, 4372323, 4372113
+                      4373315, 4372323
                     </p>
                   </div>
                 </div>
