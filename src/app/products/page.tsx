@@ -1,58 +1,19 @@
-"use client";
-
+import prisma from "@/lib/prisma";
 import SectionHeader from "@/src/components/SectionHeader";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
-interface ProductImage {
-  id: number;
-  url: string;
-  productId: number;
-}
+export const dynamic = "force-dynamic";
 
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  images: ProductImage[];
-}
-
-export default function ProductsPage() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const response = await fetch("/api/products", {
-          cache: "force-cache",
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-
-        const result = (await response.json()) as {
-          data?: Product[];
-        };
-
-        setProducts(Array.isArray(result.data) ? result.data : []);
-      } catch (fetchError) {
-        console.error(fetchError);
-        setError("Failed to load products");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+export default async function ProductsPage() {
+  const products = await prisma.product.findMany({
+    include: {
+      images: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
 
   return (
     <section className="min-h-screen bg-linear-to-b from-white via-emerald-50 to-white pt-24 md:pt-28 pb-16">
@@ -67,25 +28,7 @@ export default function ProductsPage() {
           />
         </div>
 
-        {error && (
-          <div className="mb-6 rounded-xl border border-red-300 bg-red-50 p-4 text-red-700">
-            {error}
-          </div>
-        )}
-
-        {loading ? (
-          <div className="grid gap-6 md:grid-cols-2">
-            {[1, 2, 3, 4].map((index) => (
-              <div
-                key={index}
-                className="animate-pulse rounded-3xl border border-emerald-100 bg-white p-6 shadow-sm"
-              >
-                <div className="mb-4 h-40 rounded-xl bg-gray-200" />
-                <div className="h-6 w-2/3 rounded bg-gray-200" />
-              </div>
-            ))}
-          </div>
-        ) : products.length === 0 ? (
+        {products.length === 0 ? (
           <div className="rounded-3xl border border-dashed border-emerald-200 bg-white p-12 text-center text-slate-600">
             No products available right now.
           </div>

@@ -11,11 +11,9 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={`bg-white text-black`}>
-        <AdminNavbar />
-        <div className="min-h-screen">{children}</div>
-      </body>
-    </html>
+    <div className="bg-white text-black min-h-screen">
+      <AdminNavbar />
+      <div>{children}</div>
+    </div>
   );
 }

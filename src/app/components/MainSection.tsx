@@ -26,20 +26,31 @@ interface Partner {
   imageUrl: string;
 }
 
-const MainSection = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [productsLoading, setProductsLoading] = useState(true);
-  const [partners, setPartners] = useState<Partner[]>([]);
-  const [partnersLoading, setPartnersLoading] = useState(true);
+interface MainSectionProps {
+  initialProducts?: Product[];
+  initialPartners?: Partner[];
+}
+
+const MainSection = ({ initialProducts = [], initialPartners = [] }: MainSectionProps) => {
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [productsLoading, setProductsLoading] = useState(initialProducts.length === 0);
+  const [partners, setPartners] = useState<Partner[]>(initialPartners);
+  const [partnersLoading, setPartnersLoading] = useState(initialPartners.length === 0);
 
   const featuredProducts = products.slice(0, 4);
 
   useEffect(() => {
+    // Only fetch if no initial data provided
+    if (initialProducts.length > 0 && initialPartners.length > 0) {
+      setProductsLoading(false);
+      setPartnersLoading(false);
+      return;
+    }
+
     const fetchProducts = async () => {
+      if (initialProducts.length > 0) return;
       try {
-        const res = await fetch(`/api/products`, {
-          cache: "force-cache",
-        });
+        const res = await fetch(`/api/products`);
         const json = await res.json();
         setProducts(Array.isArray(json?.data) ? json.data : []);
       } catch (error) {
@@ -50,18 +61,17 @@ const MainSection = () => {
     };
 
     const fetchPartners = async () => {
+      if (initialPartners.length > 0) return;
       try {
-        const res = await fetch(`/api/partners`, {
-          cache: "no-store",
-        });
+        const res = await fetch(`/api/partners`);
         const json = await res.json();
         const normalizedPartners = Array.isArray(json?.data)
           ? json.data.filter(
-              (partner: Partner) =>
-                typeof partner?.id === "number" &&
-                typeof partner?.imageUrl === "string" &&
-                partner.imageUrl.length > 0,
-            )
+            (partner: Partner) =>
+              typeof partner?.id === "number" &&
+              typeof partner?.imageUrl === "string" &&
+              partner.imageUrl.length > 0,
+          )
           : [];
 
         setPartners(normalizedPartners);
@@ -75,7 +85,7 @@ const MainSection = () => {
 
     fetchProducts();
     fetchPartners();
-  }, []);
+  }, [initialProducts, initialPartners]);
 
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-emerald-50 via-white to-white pt-16 md:pt-24">
@@ -148,7 +158,7 @@ const MainSection = () => {
             <SectionHeader
               kicker="Trusted Network"
               title="Our"
-              highlight="Partners"
+              highlight="Users"
               align="center"
             />
           </div>
@@ -163,7 +173,7 @@ const MainSection = () => {
               ))}
             </div>
           ) : partners.length === 0 ? (
-            <p className="text-center text-slate-500">No partners available.</p>
+            <p className="text-center text-slate-500">No users available at the moment.</p>
           ) : (
             <div className="flex flex-wrap justify-center gap-6 max-w-7xl mx-auto px-4">
               {partners.map((partner) => (

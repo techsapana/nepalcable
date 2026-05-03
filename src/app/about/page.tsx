@@ -60,6 +60,15 @@ const portfolioCategories = [
 
 const leadershipProfiles = [
   {
+    name: "Mrs. Shanta Sigdyal — Chairman",
+    summary:
+      "Provides strategic direction and governance across NWCPL and related concerns.",
+    highlights: [
+      "Chairs NWCPL, NWC Concern, and Amrit Nath Udyam for long-term stability.",
+      "Former board member of Prakash Cable Industries and Solarex Nepal.",
+    ],
+  },
+  {
     name: "Ashish Sigdyal — Managing Director",
     summary:
       "With over 25 years at NWCPL, Ashish drives operations and market strategy.",
@@ -69,15 +78,7 @@ const leadershipProfiles = [
       "Education at St. Joseph’s, Darjeeling and Bellevue University, Nebraska.",
     ],
   },
-  {
-    name: "Mrs. Shanta Sigdyal — Chairman",
-    summary:
-      "Provides strategic direction and governance across NWCPL and related concerns.",
-    highlights: [
-      "Chairs NWCPL, NWC Concern, and Amrit Nath Udyam for long-term stability.",
-      "Former board member of Prakash Cable Industries and Solarex Nepal.",
-    ],
-  },
+
   {
     name: "Krishna P. Sigdyal — Senior Consultant",
     summary:

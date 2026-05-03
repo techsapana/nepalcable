@@ -14,9 +14,8 @@ const Card = ({ imageSrc, title, subtitle, href }: CardProps) => {
       <Image
         src={imageSrc}
         alt={title}
-        layout="fill"
-        objectFit="cover"
-        className="transition-transform duration-500 group-hover:scale-110"
+        fill
+        className="object-cover transition-transform duration-500 group-hover:scale-110"
       />
 
       <div className="absolute inset-0 bg-linear-to-t from-slate-900/75 via-slate-900/15 to-transparent" />

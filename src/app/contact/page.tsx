@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, Variants } from "framer-motion";
-import { FiMail, FiMapPin, FiPhone } from "react-icons/fi";
+import { FiMail, FiMapPin, FiPhone, FiClock } from "react-icons/fi";
 import SectionHeader from "@/src/components/SectionHeader";
 
 const fadeUp: Variants = {
@@ -227,7 +227,7 @@ export default function ContactUsPage() {
 
         {/* Contact Information Cards */}
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
@@ -263,10 +263,10 @@ export default function ContactUsPage() {
               <div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Email</h3>
                 <a
-                  href="mailto:necables@hotmail.com"
+                  href="mailto:nepalcables2025@gmail.com"
                   className="text-slate-700 hover:text-emerald-700 transition"
                 >
-                  necables@hotmail.com
+                  nepalcables2025@gmail.com
                 </a>
               </div>
             </div>
@@ -288,6 +288,23 @@ export default function ContactUsPage() {
                       4373315, 4372323
                     </p>
                   </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+          <motion.div
+            variants={fadeUpItem}
+            className="rounded-3xl border border-emerald-100 bg-white p-8 shadow-sm transition-shadow duration-300 hover:shadow-md"
+          >
+            <div className="flex items-start gap-4 mb-4">
+              <div className="w-14 h-14 bg-emerald-100 rounded-full flex items-center justify-center shrink-0">
+                <FiClock className="text-emerald-700 text-xl" />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-slate-900 mb-2">Business Hours</h3>
+                <div className="text-slate-700 leading-relaxed">
+                  <p>Sun - Fri: 9:30 AM - 6:00 PM</p>
+                  <p className="text-red-600 text-sm font-medium mt-1">Closed on Saturday</p>
                 </div>
               </div>
             </div>

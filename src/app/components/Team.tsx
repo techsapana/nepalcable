@@ -15,13 +15,22 @@ type TeamMember = {
 
 const API_URL = `/api/team`;
 
-export default function Team() {
-  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+interface TeamProps {
+  initialMembers?: TeamMember[];
+}
+
+export default function Team({ initialMembers = [] }: TeamProps) {
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>(initialMembers);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(initialMembers.length === 0);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (initialMembers.length > 0) {
+      setIsLoading(false);
+      return;
+    }
+
     const fetchTeamMembers = async () => {
       try {
         setIsLoading(true);
@@ -51,7 +60,7 @@ export default function Team() {
     };
 
     fetchTeamMembers();
-  }, []);
+  }, [initialMembers]);
 
   const canSlide = teamMembers.length > 1;
   const activeMember = teamMembers[currentIndex];

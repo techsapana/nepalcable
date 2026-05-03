@@ -20,7 +20,16 @@ export default function AdminLogin() {
         body: JSON.stringify({ username, password }),
       });
 
-      const result = await res.json();
+      const contentType = res.headers.get("content-type");
+      let result;
+      if (contentType && contentType.includes("application/json")) {
+        result = await res.json();
+      } else {
+        const text = await res.text();
+        console.error("Non-JSON response received:", text);
+        alert("Server error: Received unexpected response from server.");
+        return;
+      }
 
       if (!res.ok || !result.success) {
         alert(result.message || "Login failed");

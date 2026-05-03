@@ -1,130 +1,49 @@
-"use client";
+import prisma from "@/lib/prisma";
+import HomeClient from "./HomeClient";
 
-import { motion } from "framer-motion";
-import axios from "axios";
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import MainSection from "./components/MainSection";
-import HeroSection2 from "./components/HeroSection";
-import BottomSection from "./components/BottomSection";
-import Team from "./components/Team";
-import Faqs from "./components/Faqs";
+export const dynamic = "force-dynamic";
 
-interface Notice {
-  id: number;
-  title: string;
-  content: string;
-  imageUrl: string | null;
-  published: boolean;
-}
+export default async function Home() {
+  // Fetch data in parallel on the server
+  const [notices, products, partners, teamMembers] = await Promise.all([
+    prisma.notice.findMany({
+      where: { published: true },
+      orderBy: { createdAt: "desc" },
+      take: 1,
+    }),
+    prisma.product.findMany({
+      include: { images: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.partner.findMany({
+      orderBy: { createdAt: "desc" },
+    }),
+    prisma.teamMember.findMany({
+      orderBy: { createdAt: "desc" },
+    }),
+  ]);
 
-export default function Home() {
-  const [notice, setNotice] = useState<Notice | null>(null);
-  const [showNotice, setShowNotice] = useState(false);
+  // Transform data for components
+  const initialNotice = notices[0] || null;
+  
+  const normalizedPartners = partners.filter(
+    (p) => p.id && p.imageUrl && p.imageUrl.length > 0
+  );
 
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      const scrollToSection = () => {
-        const element = document.querySelector(hash);
-        if (element) {
-          const navbarHeight = 100;
-          const elementPosition = element.getBoundingClientRect().top;
-          const offsetPosition =
-            elementPosition + window.pageYOffset - navbarHeight;
-
-          window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth",
-          });
-        }
-      };
-
-      const timer = setTimeout(scrollToSection, 300);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchPublishedNotice = async () => {
-      try {
-        const res = await axios.get("/api/notice?published=true");
-        const notices = res.data?.data as Notice[];
-
-        const publishedNotices = Array.isArray(notices)
-          ? notices.filter((item) => item.published)
-          : [];
-
-        if (publishedNotices.length > 0) {
-          setNotice(publishedNotices[0]);
-          setShowNotice(true);
-        }
-      } catch (error) {
-        console.error("Failed to fetch notice:", error);
-      }
-    };
-
-    fetchPublishedNotice();
-  }, []);
+  const normalizedTeamMembers = teamMembers.map((m) => ({
+    id: m.id,
+    name: m.name,
+    post: m.role, // Mapping schema 'role' to UI 'post'
+    image: m.imageUrl, // Mapping schema 'imageUrl' to UI 'image'
+    description: m.description,
+  }));
 
   return (
-    <>
-      {showNotice && notice && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
-          <div className="relative w-full max-w-xl rounded-xl bg-white p-6 shadow-xl">
-            <button
-              onClick={() => setShowNotice(false)}
-              className="absolute right-3 cursor-pointer top-3 text-3xl text-gray-500 hover:text-gray-700"
-              aria-label="Close notice"
-            >
-              ×
-            </button>
-
-            <h2 className="text-2xl font-bold mb-3">{notice.title}</h2>
-
-            {notice.imageUrl && (
-              <div className="relative h-56 w-full overflow-hidden rounded-lg border border-gray-200 mb-4">
-                <Image
-                  src={notice.imageUrl}
-                  alt={notice.title}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            )}
-
-            <p className="text-gray-700 whitespace-pre-line max-h-72 overflow-y-auto">
-              {notice.content}
-            </p>
-          </div>
-        </div>
-      )}
-
-      <div className="bg-white">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <HeroSection2 />
-        </motion.div>
-
-        {/* <Marquee text="Trusted cable and wiring solutions for homes, industries, and infrastructure across Nepal" /> */}
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <MainSection />
-        </motion.div>
-
-        <Team />
-        <BottomSection />
-        <Faqs />
-      </div>
-    </>
+    <HomeClient 
+      initialNotice={initialNotice}
+      products={products}
+      partners={normalizedPartners}
+      teamMembers={normalizedTeamMembers}
+    />
   );
 }

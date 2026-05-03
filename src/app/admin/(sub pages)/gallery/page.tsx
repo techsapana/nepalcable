@@ -7,6 +7,8 @@ interface GalleryForm {
   id?: number;
   title: string;
   images: File[];
+  existingImages: GalleryImage[];
+  deletedImageIds: number[];
 }
 
 interface GalleryImage {
@@ -27,6 +29,8 @@ export default function AdminGalleryForm() {
   const [form, setForm] = useState<GalleryForm>({
     title: "",
     images: [],
+    existingImages: [],
+    deletedImageIds: [],
   });
 
   const [galleries, setGalleries] = useState<Gallery[]>([]);
@@ -41,13 +45,14 @@ export default function AdminGalleryForm() {
     setLoading(true);
     try {
       const res = await fetch(API_URL);
-      const data = await res.json();
+      const result = await res.json();
 
-      // Check if response is an array
-      if (Array.isArray(data)) {
-        setGalleries(data);
+      if (result.success && Array.isArray(result.data)) {
+        setGalleries(result.data);
+      } else if (Array.isArray(result)) {
+        setGalleries(result);
       } else {
-        console.error("Invalid response format:", data);
+        console.error("Invalid response format:", result);
         setGalleries([]);
       }
     } catch (err) {
@@ -79,6 +84,7 @@ export default function AdminGalleryForm() {
       JSON.stringify({
         id: form.id,
         title: form.title,
+        deletedImageIds: form.deletedImageIds,
       }),
     );
 
@@ -93,7 +99,7 @@ export default function AdminGalleryForm() {
       });
 
       alert(`Gallery ${form.id ? "updated" : "created"}!`);
-      setForm({ title: "", images: [] });
+      setForm({ title: "", images: [], existingImages: [], deletedImageIds: [] });
       fetchGalleries();
     } catch (err) {
       console.error(err);
@@ -108,6 +114,16 @@ export default function AdminGalleryForm() {
       id: gallery.id,
       title: gallery.title,
       images: [],
+      existingImages: gallery.images || [],
+      deletedImageIds: [],
+    });
+  };
+
+  const handleRemoveExistingImage = (id: number) => {
+    setForm({
+      ...form,
+      existingImages: form.existingImages.filter((img) => img.id !== id),
+      deletedImageIds: [...form.deletedImageIds, id],
     });
   };
 
@@ -146,6 +162,31 @@ export default function AdminGalleryForm() {
             onChange={handleFileChange}
             className="border p-2 w-full mb-2 rounded"
           />
+
+          {form.existingImages.length > 0 && (
+            <div className="mb-4">
+              <p className="text-sm font-semibold mb-2">Existing Images:</p>
+              <div className="flex flex-wrap gap-2">
+                {form.existingImages.map((img) => (
+                  <div key={img.id} className="relative group">
+                    <Image
+                      src={img.url}
+                      alt=""
+                      width={64}
+                      height={64}
+                      className="w-16 h-16 object-cover rounded border"
+                    />
+                    <button
+                      onClick={() => handleRemoveExistingImage(img.id)}
+                      className="absolute -top-2 -right-2 bg-red-600 text-white w-5 h-5 rounded-full flex items-center justify-center text-xs cursor-pointer shadow-sm hover:bg-red-700"
+                    >
+                      ×
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {form.images.length > 0 && (
             <p className="text-sm text-gray-600">
@@ -201,7 +242,7 @@ export default function AdminGalleryForm() {
                 <div>
                   <p className="font-semibold">{gallery.title}</p>
 
-                  <div className="flex gap-2 mt-2">
+                  <div className="flex flex-wrap gap-2 mt-2 max-w-2xl">
                     {gallery.images?.map((img) => (
                       <Image
                         key={img.id}
@@ -209,7 +250,7 @@ export default function AdminGalleryForm() {
                         alt=""
                         width={80}
                         height={80}
-                        className="w-16 h-16 object-cover rounded"
+                        className="w-16 h-16 object-cover rounded border border-gray-100"
                       />
                     ))}
                   </div>

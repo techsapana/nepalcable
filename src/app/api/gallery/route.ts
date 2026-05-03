@@ -4,10 +4,12 @@ import { uploadtocloudinary } from "@/src/services/uploadtocloudinary";
 import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 type GalleryPayload = {
   id?: number;
   title: string;
+  deletedImageIds?: number[];
 };
 
 const parseGalleryPayload = (
@@ -22,6 +24,7 @@ const parseGalleryPayload = (
   return {
     id: parsed.id,
     title: (parsed.title ?? "").trim(),
+    deletedImageIds: parsed.deletedImageIds || [],
   };
 };
 
@@ -76,7 +79,10 @@ export async function GET() {
       },
     });
 
-    return NextResponse.json(galleries);
+    return NextResponse.json({
+      success: true,
+      data: galleries,
+    });
   } catch (error) {
     return NextResponse.json(
       {
@@ -203,6 +209,20 @@ export async function PUT(request: Request) {
       uploadedImageUrls = uploadResults.map((item) => item.secure_url);
     }
 
+    if (gallery.deletedImageIds && gallery.deletedImageIds.length > 0) {
+      const imagesToDelete = existing.images.filter((img: { id: number; url: string }) =>
+        gallery.deletedImageIds?.includes(img.id),
+      );
+
+      await prisma.galleryImage.deleteMany({
+        where: { id: { in: gallery.deletedImageIds } },
+      });
+
+      await Promise.all(
+        imagesToDelete.map((img: { url: string }) => deleteCloudinaryFile(img.url)),
+      );
+    }
+
     const updated = await prisma.gallery.update({
       where: { id: galleryId },
       data: {
@@ -269,7 +289,7 @@ export async function DELETE(request: Request) {
     });
 
     await Promise.all(
-      existing.images.map((image) => deleteCloudinaryFile(image.url)),
+      existing.images.map((image: { url: string }) => deleteCloudinaryFile(image.url)),
     );
 
     return NextResponse.json({
