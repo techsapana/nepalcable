@@ -196,11 +196,10 @@ export default function ContactUsPage() {
 
                 {submitStatus && (
                   <p
-                    className={`text-sm ${
-                      submitStatus.type === "success"
+                    className={`text-sm ${submitStatus.type === "success"
                         ? "text-emerald-700"
                         : "text-red-600"
-                    }`}
+                      }`}
                   >
                     {submitStatus.message}
                   </p>
@@ -303,7 +302,7 @@ export default function ContactUsPage() {
               <div>
                 <h3 className="text-xl font-bold text-slate-900 mb-2">Business Hours</h3>
                 <div className="text-slate-700 leading-relaxed">
-                  <p>Sun - Fri: 9:30 AM - 6:00 PM</p>
+                  <p>Sun - Fri: 10:00 AM - 6:00 PM</p>
                   <p className="text-red-600 text-sm font-medium mt-1">Closed on Saturday</p>
                 </div>
               </div>

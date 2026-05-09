@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { FiMail, FiMapPin, FiPhone, FiClock } from "react-icons/fi";
 import { FaFacebookF, FaLinkedinIn, FaTiktok, FaInstagram, FaYoutube } from "react-icons/fa6";
@@ -46,17 +47,13 @@ const Footer = () => {
           <div className="rounded-3xl border border-emerald-100 bg-white/70 p-6 shadow-sm">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-700 font-bold text-white">
-                  NC
-                </span>
-                <div>
-                  <p className="text-lg font-bold leading-none text-emerald-800">
-                    Nepal Cables
-                  </p>
-                  <p className="text-xs text-slate-500">
-                    Quality Cabling Solutions
-                  </p>
-                </div>
+                <Image
+                  src="/nepalcableslogo.png"
+                  alt="Nepal Cables Logo"
+                  width={300}
+                  height={100}
+                  className="h-20 w-auto object-contain"
+                />
               </div>
               <p className="text-slate-600 leading-relaxed text-sm md:text-base">
                 Nepal Cables provides dependable cabling solutions for homes,
@@ -78,6 +75,7 @@ const Footer = () => {
                     <p className="font-bold text-slate-900 uppercase tracking-tight mb-1">MFG Plant</p>
                     <p>Jeetpursimara Sub-Metropolitan, Ward No.1</p>
                     <p>Madhesh Pradesh, Simara, Bara, Nepal</p>
+                    <span className="flex items-center gap-2 mt-1"><FiMail className="text-emerald-700 text-base shrink-0" />nepalcables@yahoo.com</span>
                   </div>
                 </div>
               </div>
@@ -162,7 +160,7 @@ const Footer = () => {
                 <FiClock className="text-emerald-700 text-xl mt-1" />
                 <div className="text-slate-700">
                   <p className="font-semibold text-slate-900">Business Hours:</p>
-                  <p>Sun - Fri: 9:30 AM - 6:00 PM</p>
+                  <p>Sun - Fri: 10:00 AM - 6:00 PM</p>
                   <p className="text-red-600 text-xs font-medium">Closed on Saturday</p>
                 </div>
               </li>

@@ -18,6 +18,9 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: "Nepal Cables | Home",
+  icons: {
+    icon: "/nepalcableslogo.png",
+  },
 };
 
 export default function RootLayout({

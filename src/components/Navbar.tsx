@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ChevronDown, Menu, X } from "lucide-react";
 
 type DropdownItem = { name: string; href: string };
@@ -72,16 +73,15 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 z-50 w-full border-b border-emerald-100 bg-white/85 backdrop-blur-xl">
       <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-3">
-          <span className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-700 text-sm font-bold text-white shadow-md shadow-emerald-200">
-            NC
-          </span>
-          <div>
-            <p className="text-base font-bold leading-none text-emerald-800">
-              Nepal Cables
-            </p>
-            <p className="text-xs text-slate-500">Quality Cabling Solutions</p>
-          </div>
+        <Link href="/" className="flex items-center gap-3 h-20 overflow-hidden">
+          <Image
+            src="/nepalcableslogo.png"
+            alt="Nepal Cables Logo"
+            width={400}
+            height={120}
+            className="h-24 w-auto object-contain object-top"
+            priority
+          />
         </Link>
 
         <div className="hidden items-center gap-2 rounded-full border border-emerald-100 bg-white p-2 shadow-sm md:flex">
