@@ -158,7 +158,7 @@ const MainSection = ({ initialProducts = [], initialPartners = [] }: MainSection
             <SectionHeader
               kicker="Trusted Network"
               title="Our"
-              highlight="Users"
+              highlight="Valuable Customers"
               align="center"
             />
           </div>
@@ -173,7 +173,7 @@ const MainSection = ({ initialProducts = [], initialPartners = [] }: MainSection
               ))}
             </div>
           ) : partners.length === 0 ? (
-            <p className="text-center text-slate-500">No users available at the moment.</p>
+            <p className="text-center text-slate-500">No customers available at the moment.</p>
           ) : (
             <div className="flex flex-wrap justify-center gap-6 max-w-7xl mx-auto px-4">
               {partners.map((partner) => (
